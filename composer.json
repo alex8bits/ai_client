@@ -1,0 +1,27 @@
+{
+    "name": "alex8bits/ai_client",
+    "description": "Laravel AI integration",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Alex8bits\\AiClient\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.1",
+        "illuminate/support": "^10.0 || ^11.0"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Alex8bits\\AiClient\\ChatGPTServiceProvider"
+            ],
+            "aliases": {
+                "ChatGPT": "Alex8bits\\AiClient\\Facades\\ChatGPT"
+            }
+        }
+    }
+}
