@@ -25,11 +25,11 @@ class RequestPayloadBuilder
         if ($request->tools) {
             $payload['tools'] = array_map(function ($tool) {
                 return [
-                    'type'     => $tool->type,
+                    'type'     => $tool['type'],
                     'function' => [
-                        'name'        => $tool->function->name,
-                        'description' => $tool->function->description,
-                        'parameters'  => $tool->function->parameters,
+                        'name'        => $tool['function']['name'],
+                        'description' => $tool['function']['description'],
+                        'parameters'  => $tool['function']['parameters'],
                     ],
                 ];
             }, $request->tools);
