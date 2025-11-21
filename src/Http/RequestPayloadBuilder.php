@@ -46,15 +46,15 @@ class RequestPayloadBuilder
     {
         $choices = [];
 
-        foreach ($json['choices'] ?? [] as $choice) {
+        foreach ($json['output'] ?? [] as $choice) {
 
             $functionCall = null;
 
-            if (!empty($choice['message']['tool_calls'][0]['function'])) {
-                $fc = $choice['message']['tool_calls'][0]['function'];
+            if ($choice['type'] === 'function') {
                 $functionCall = new FunctionCall(
-                    name: $fc['name'],
-                    arguments: $fc['arguments']
+                    name: $choice['name'],
+                    arguments: $choice['arguments'],
+                    call_id: $choice['call_id']
                 );
             }
 
