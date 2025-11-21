@@ -18,7 +18,10 @@ class ProxyClient implements ClientInterface
     {
         $payload = $this->builder->build($request);
 
-        $response = Http::post(config('chatgpt.proxy_url'), $payload);
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . config('chatgpt.api_key'),
+        ])->withOptions(['proxy' => config('chatgpt.proxy_url')])
+            ->post(config('chatgpt.endpoint'), $payload);
 
         if (!$response->successful()) {
             throw new ChatGPTException('Proxy error: ' . $response->body());
