@@ -50,7 +50,7 @@ class RequestPayloadBuilder
 
             $functionCall = null;
 
-            if ($choice['type'] === 'function') {
+            if ($choice['type'] === 'function_call') {
                 $functionCall = new FunctionCall(
                     name: $choice['name'],
                     arguments: $choice['arguments'],
