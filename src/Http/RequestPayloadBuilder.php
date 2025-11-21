@@ -13,7 +13,7 @@ class RequestPayloadBuilder
     {
         $payload = [
             'model' => $request->model ?? config('chatgpt.model'),
-            'messages' => array_map(
+            'input' => array_map(
                 fn($m) => [
                     'role'    => $m->role->value,
                     'content' => $m->content,
@@ -25,18 +25,16 @@ class RequestPayloadBuilder
         if ($request->tools) {
             $payload['tools'] = array_map(function ($tool) {
                 return [
-                    'type'     => $tool['type'],
-                    'function' => [
-                        'name'        => $tool['function']['name'],
-                        'description' => $tool['function']['description'],
-                        'parameters'  => $tool['function']['parameters'],
-                    ],
+                    'type'          => $tool['type'],
+                    'name'          => $tool['function']['name'],
+                    'description'   => $tool['function']['description'],
+                    'parameters'    => $tool['function']['parameters'],
                 ];
             }, $request->tools);
         }
 
+        $payload['tool_choice'] = "auto";
         $payload['temperature'] = $request->temperature ?? config('chatgpt.temperature');
-        $payload['max_tokens']  = $request->maxTokens ?? config('chatgpt.max_tokens');
 
         return $payload;
     }
