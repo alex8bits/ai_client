@@ -11,13 +11,25 @@ class RequestPayloadBuilder
 {
     public function build(ChatRequest $request): array
     {
+        $fields = ['content', 'type', 'call_id', 'output', 'name', 'arguments'];
         $payload = [
             'model' => $request->model ?? config('chatgpt.model'),
             'input' => array_map(
-                fn($m) => [
-                    'role'    => $m->role->value,
-                    'content' => $m->content,
-                ],
+                function ($m) use ($fields) {
+                    $item = [];
+
+                    if (!empty($m->role)) {
+                        $item['role'] = $m->role->value;
+                    }
+
+                    foreach ($fields as $field) {
+                        if (!empty($m->{$field})) {
+                            $item[$field] = $m->{$field};
+                        }
+                    }
+
+                    return $item;
+                },
                 $request->messages
             ),
         ];

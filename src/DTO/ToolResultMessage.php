@@ -7,9 +7,8 @@ use Alex8bits\AiClient\Enums\Role;
 class ToolResultMessage
 {
     public function __construct(
-        public string $tool_call_id,
-        public string|array|null $content,
-        public Role $role = Role::Assistant,
-        public string $type = 'tool_result',
+        public string $call_id,
+        public string $output,
+        public ?string $type = 'function_call_output',
     ) {}
 }
