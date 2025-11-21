@@ -6,26 +6,6 @@
 Пакет построен на принципе независимости от провайдера:
 можно использовать OpenAI напрямую или через любой свой Proxy API.
 
-✨ Возможности
-
-✔ Поддержка ChatGPT (OpenAI) и любых кастомных API-прокси
-
-✔ Чистые DTO вместо массивов
-
-✔ Автодобавление системных инструкций
-
-✔ Поддержка tools / function calling
-
-✔ Настройка инструментов через config
-
-✔ Полностью совместимо с Laravel 10 / 11
-
-✔ Фасад ChatGPT
-
-✔ Расширяемость и кастомизация клиента
-
-✔ Тестируемость (mock ClientInterface)
-
 ## 📦 Установка
 ```bash
 composer require alex8bits/ai_client
@@ -186,5 +166,4 @@ ChatGPT::send(
 $response->choices[0]->content;
 $response->choices[0]->functionCall?->name;
 $response->raw;     // полный JSON
-$response->text();  // удобный доступ к тексту
 ```
