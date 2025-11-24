@@ -71,7 +71,7 @@ class RequestPayloadBuilder
             }
 
             $choices[] = new ChatChoice(
-                content: $choice['message']['content'] ?? null,
+                content: $choice['content'][0]['text'] ?? null,
                 functionCall: $functionCall,
                 finishReason: $choice['finish_reason'] ?? ''
             );
