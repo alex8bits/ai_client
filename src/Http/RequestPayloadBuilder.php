@@ -33,7 +33,7 @@ class RequestPayloadBuilder
                 $request->messages
             ),
         ];
-
+        
         if ($request->tools) {
             $payload['tools'] = array_map(function ($tool) {
                 return [
@@ -42,7 +42,7 @@ class RequestPayloadBuilder
                     'description'   => $tool['function']['description'],
                     'parameters'    => $tool['function']['parameters'],
                 ];
-            }, $request->tools);
+            }, $request->tools[0]);
         }
 
         $payload['tool_choice'] = "auto";
