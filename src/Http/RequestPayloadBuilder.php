@@ -42,7 +42,7 @@ class RequestPayloadBuilder
                     'description'   => $tool['function']['description'],
                     'parameters'    => $tool['function']['parameters'],
                 ];
-            }, $request->tools[0]);
+            }, $request->tools);
         }
 
         $payload['tool_choice'] = "auto";
