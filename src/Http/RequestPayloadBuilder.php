@@ -12,41 +12,50 @@ class RequestPayloadBuilder
     public function build(ChatRequest $request): array
     {
         $fields = ['content', 'type', 'call_id', 'output', 'name', 'arguments'];
+
+        $input = array_map(function ($m) use ($fields) {
+            $item = [
+                'role' => $m->role->value ?? 'user',
+                'content' => []
+            ];
+
+            if (!empty($m->content)) {
+                foreach ((array)$m->content as $c) {
+                    if (is_string($c)) {
+                        $item['content'][] = ['type' => 'text', 'text' => $c];
+                    } elseif (is_array($c)) {
+                        $item['content'][] = $c;
+                    }
+                }
+            }
+
+            foreach ($fields as $field) {
+                if (!empty($m->{$field})) {
+                    $item[$field] = $m->{$field};
+                }
+            }
+
+            return $item;
+        }, $request->messages);
+
         $payload = [
+            'assistant' => config('chatgpt.assistant'),
             'model' => $request->model ?? config('chatgpt.model'),
-            'input' => array_map(
-                function ($m) use ($fields) {
-                    $item = [];
-
-                    if (!empty($m->role)) {
-                        $item['role'] = $m->role->value;
-                    }
-
-                    foreach ($fields as $field) {
-                        if (!empty($m->{$field})) {
-                            $item[$field] = $m->{$field};
-                        }
-                    }
-
-                    return $item;
-                },
-                $request->messages
-            ),
+            'input' => $input,
+            'temperature' => $request->temperature ?? config('chatgpt.temperature'),
+            'tool_choice' => 'auto',
         ];
-        
-        if ($request->tools) {
+
+        if (!empty($request->tools)) {
             $payload['tools'] = array_map(function ($tool) {
                 return [
-                    'type'          => $tool['type'],
-                    'name'          => $tool['function']['name'],
-                    'description'   => $tool['function']['description'],
-                    'parameters'    => $tool['function']['parameters'],
+                    'name' => $tool['function']['name'],
+                    'description' => $tool['function']['description'],
+                    'parameters' => $tool['function']['parameters'],
                 ];
             }, $request->tools);
         }
 
-        $payload['tool_choice'] = "auto";
-        $payload['temperature'] = $request->temperature ?? config('chatgpt.temperature');
 
         return $payload;
     }
