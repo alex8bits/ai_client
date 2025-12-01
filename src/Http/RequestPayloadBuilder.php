@@ -39,7 +39,6 @@ class RequestPayloadBuilder
         }, $request->messages);
 
         $payload = [
-            'assistant' => config('chatgpt.assistant'),
             'model' => $request->model ?? config('chatgpt.model'),
             'input' => $input,
             'temperature' => $request->temperature ?? config('chatgpt.temperature'),

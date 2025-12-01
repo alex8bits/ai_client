@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'assistant'     => env('CHATGPT_ASSISTANT_ID', null),
     'endpoint'     => env('CHATGPT_URL', 'https://api.openai.com/v1/responses'),
     'api_key'      => env('CHATGPT_API_KEY'),
     'model'        => 'gpt-4o-mini',
