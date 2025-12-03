@@ -7,6 +7,7 @@ use Alex8bits\AiClient\DTO\ChatRequest;
 use Alex8bits\AiClient\DTO\ChatResponse;
 use Alex8bits\AiClient\Exceptions\ChatGptException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ProxyClient implements ClientInterface
 {

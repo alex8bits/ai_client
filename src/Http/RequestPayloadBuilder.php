@@ -14,6 +14,23 @@ class RequestPayloadBuilder
         $fields = ['content', 'type', 'call_id', 'output', 'name', 'arguments'];
 
         $input = array_map(function ($m) use ($fields) {
+            // Сообщения типа function_call или tool → НЕ добавляем content/role
+            if (
+                (!empty($m->type) && $m->type === 'function_call') ||
+                (!empty($m->type) && $m->type === 'function_call_output') ||
+                (!empty($m->type) && $m->type === 'tool')
+            ) {
+                $item = [];
+
+                foreach ($fields as $field) {
+                    if (!empty($m->{$field})) {
+                        $item[$field] = $m->{$field};
+                    }
+                }
+
+                return $item;
+            }
+
             $item = [
                 'role' => $m->role->value ?? 'user',
                 'content' => []
@@ -48,13 +65,13 @@ class RequestPayloadBuilder
         if (!empty($request->tools)) {
             $payload['tools'] = array_map(function ($tool) {
                 return [
+                    'type' => $tool['type'],
                     'name' => $tool['function']['name'],
                     'description' => $tool['function']['description'],
                     'parameters' => $tool['function']['parameters'],
                 ];
             }, $request->tools);
         }
-
 
         return $payload;
     }
