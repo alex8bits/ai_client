@@ -21,12 +21,14 @@ class ChatService
      * @param Tool[] $tools — инструменты, переданные вручную (не из конфига)
      * @param string|null $instructionKey — ключ инструкции в config('chatgpt.instructions')
      * @param string[] $toolKeys — инструменты, подгружаемые из config('chatgpt.tools')
+     * @param boolean $use_base_prompt - надо ли использовать при запросе базовый промрт
      */
     public function send(
         array $messages,
         array $tools = [],
         ?string $instructionKey = null,
-        array $toolKeys = []
+        array $toolKeys = [],
+        bool $use_base_prompt = true
     ) {
         // 1. Инструкция для конкретного диалога
         if ($instructionKey && ($inst = config("chatgpt.instructions.$instructionKey"))) {
@@ -37,7 +39,7 @@ class ChatService
         }
 
         // 2. Базовый системный промпт
-        if ($basePrompt = config('chatgpt.base_prompt')) {
+        if ($use_base_prompt && $basePrompt = config('chatgpt.base_prompt')) {
             array_unshift($messages, new Message(
                 Role::System,
                 $basePrompt
