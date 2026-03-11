@@ -7,7 +7,7 @@ use Alex8bits\AiClient\Services\ChatService;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static ChatResponse send(array $messages, array $tools = [], ?string $instructionKey = null, bool $use_base_prompt = true)
+ * @method static ChatResponse send(array $messages, array $tools = [], ?string $instructionKey = null, ?bool $use_base_prompt = true, ?string $custom_prompt = null)
  */
 class ChatGPT extends Facade
 {
