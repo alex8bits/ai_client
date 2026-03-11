@@ -28,7 +28,8 @@ class ChatService
         array $tools = [],
         ?string $instructionKey = null,
         array $toolKeys = [],
-        bool $use_base_prompt = true
+        bool $use_base_prompt = true,
+        ?string $custom_prompt = null,
     ) {
         // 1. Инструкция для конкретного диалога
         if ($instructionKey && ($inst = config("chatgpt.instructions.$instructionKey"))) {
@@ -39,10 +40,17 @@ class ChatService
         }
 
         // 2. Базовый системный промпт
+        $prompt = null;
         if ($use_base_prompt && $basePrompt = config('chatgpt.base_prompt')) {
+            $prompt = $basePrompt . PHP_EOL;
+        }
+        if ($custom_prompt) {
+            $prompt .= $custom_prompt;
+        }
+        if ($prompt) {
             array_unshift($messages, new Message(
                 Role::System,
-                $basePrompt
+                $prompt
             ));
         }
 
