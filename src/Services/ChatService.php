@@ -22,6 +22,7 @@ class ChatService
      * @param string|null $instructionKey — ключ инструкции в config('chatgpt.instructions')
      * @param string[] $toolKeys — инструменты, подгружаемые из config('chatgpt.tools')
      * @param boolean $use_base_prompt - надо ли использовать при запросе базовый промрт
+     * @param string|null $custom_prompt - кастомный промпт, можно передавать динамически помимо прописанного в конфиге
      */
     public function send(
         array $messages,
